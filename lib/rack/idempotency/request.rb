@@ -10,6 +10,16 @@ module Rack
           end
         end
       end
+
+      protected
+
+      def get_header(name)
+        if defined? Rack::Request.new(env).get_header(name)
+          super(name)
+        else
+          env[name]
+        end
+      end
     end
   end
 end
