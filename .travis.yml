@@ -8,3 +8,6 @@ addons:
     repo_token: 20db8d8f86efbab70a903a66606cb5ab8e1aaaae2d76337c4fea3271ae2b2d37
 after_success:
   - bundle exec codeclimate-test-reporter
+- gemfile:
+    - rack.1.6.Gemfile
+    - rack.2.0.Gemfile
