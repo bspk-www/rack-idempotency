@@ -16,11 +16,11 @@ module Rack
       end
 
       def to_a
-        [status, headers.to_hash, body.each { |b| b.to_s }]
+        [status, headers.to_hash, body]
       end
 
       def to_json
-        to_a.to_json
+        [status, headers.to_hash, body.each(&:to_s)].to_json
       end
     end
   end
