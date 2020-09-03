@@ -10,6 +10,16 @@ RSpec.describe Rack::Idempotency do
     expect(Rack::Idempotency::VERSION).not_to be nil
   end
 
+  it "should allow to pass expires_in on initialization" do
+    store = Rack::Idempotency::MemoryStore.new
+    middleware = Rack::Idempotency.new(app, store: store, expires_in: 600)
+
+    expect(store).to receive(:write).with(instance_of(String), instance_of(String), expires_in: 600).and_call_original
+
+    request = Rack::MockRequest.new(middleware)
+    request.get("/", "HTTP_IDEMPOTENCY_KEY" => SecureRandom.uuid)
+  end
+
   context "without an idempotency key" do
     subject { request.get("/").body }
 
@@ -19,7 +29,7 @@ RSpec.describe Rack::Idempotency do
   context "with insecure idempotency key" do
     subject { -> { request.get("/", "HTTP_IDEMPOTENCY_KEY" => 'x') } }
 
-    it { is_expected.to raise_error }
+    it { is_expected.to raise_error(Rack::Idempotency::InsecureKeyError) }
   end
 
   context "with an idempotency key" do
