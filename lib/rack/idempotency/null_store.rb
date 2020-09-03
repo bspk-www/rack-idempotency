@@ -4,7 +4,7 @@ module Rack
     class NullStore
       def read(_id); end
 
-      def write(_id, _value); end
+      def write(_id, _value, _opts); end
     end
   end
 end
