@@ -16,14 +16,15 @@ module Rack
   # the given cache.  When the client retries, it will get the previously
   # cached response.
   class Idempotency
-    def initialize(app, store: NullStore.new)
-      @app     = app
-      @store   = store
+    def initialize(app, store: NullStore.new, expires_in: 0)
+      @app        = app
+      @store      = store
+      @expires_in = expires_in
     end
 
     def call(env)
       request = Request.new(env.dup.freeze)
-      storage = RequestStorage.new(@store, request)
+      storage = RequestStorage.new(@store, request, expires_in: @expires_in)
 
       storage.read || store_response(storage, env)
     end

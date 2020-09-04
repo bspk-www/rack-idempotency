@@ -10,7 +10,7 @@ module Rack
         store[id]
       end
 
-      def write(id, value)
+      def write(id, value, _opts)
         store[id] = value
       end
 
