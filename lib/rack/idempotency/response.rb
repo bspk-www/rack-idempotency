@@ -7,7 +7,7 @@ module Rack
 
       def initialize(status, headers, body)
         @status  = status.to_i
-        @headers = Rack::Utils::HeaderHash.new(headers)
+        @headers = Rack::Headers.new.merge(headers)
         @body    = body
       end
 
